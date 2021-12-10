@@ -1,0 +1,114 @@
+﻿@model Proyecto2.Models.Menu
+
+@{
+    Layout = "_FinalLayout";
+    ViewData["Title"] = "Menu";
+
+}
+
+
+
+<h1 class="alert alert-info" role="alert">Seleccione un Menu</h1>
+
+<div class="row">
+
+    <form class="form-inline" asp-action="getMenu">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="input-group ml-3">
+            <label class="control-label">Menu </label>
+            <select asp-for="Id" class="form-control" asp-items="ViewBag.idMenu"></select>
+        </div>
+
+        <div class="input-group ml-3">
+            <input type="submit" value="Consultar" class="btn btn-primary" />
+        </div>
+    </form>
+
+
+</div>
+
+
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <ul class="list-group list-group-horizontal">
+
+
+                @if (ViewBag.ListaDatos != null)
+                {
+                    @foreach (Platillo item in ViewBag.ListaDatos)
+                    {
+
+                        <li class="list-group-item">
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">@(item.Nombre)</h5>
+
+                                    @if (item.Imagen != null)
+                                    {
+                                        var base64 = Convert.ToBase64String(item.Imagen);
+                                        var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+
+                                        <img src="@imgSrc" width="250" height="250" />
+                                    }
+
+
+                                    <form class="form-inline" asp-action="Comprar">
+
+                                        <div class="form-group mb-5 mt-5">
+                                            <input asp-for="cantidad" class="form-control" type="number" />
+                                        </div>
+
+                                        <input type="hidden" asp-for="Id" value="@item.Id" />
+                                        <button type="submit" class="btn btn-warning btn-lg">
+                                            <i class="bi bi-currency-bitcoin"></i>
+                                            Comprar
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                }
+                else
+                {
+                    <br />
+                    <br />
+                    <br />
+                    <div class="alert alert-danger" role="alert">
+                        <strong>Alerta!</strong> Sin Platillos para Este Menu.
+                    </div>
+                }
+
+
+            </ul>
+
+            <div>
+                <a asp-action="Index" class="btn btn-danger"> Volver</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@if (ViewBag.Mensaje != null)
+{
+    <div class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="mr-auto">Mensaje</strong> 
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            @ViewBag.Mensaje
+        </div>
+    </div>
+}
+

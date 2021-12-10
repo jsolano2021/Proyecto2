@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Proyecto2.Models.Detalle>
+
+
+@{
+    Layout = "_FinalLayout";
+    ViewData["Title"] = "Finalizar Compra";
+}
+
+<h1 class="alert alert-warning" role="alert">Finalizar Compra de productos</h1>
+</br>
+</br>
+</br>
+
+
+
+<table cellpadding="2" cellspacing="2" border="1" class="table table-hover">
+    <tr class="table-warning">
+        <th>Opciones</th>
+        <th>Id</th>
+        <th>Nombre</th>
+        <th>Imagen</th>
+        <th>Precio</th>
+        <th>Cantidad</th>
+        <th>Sub Total</th>
+        <th>Restaurante</th>
+    </tr>
+    @foreach (Detalle item in Model)
+    {
+        <tr>
+            <td>
+
+                @{ string e = "id"; }
+
+                <form class="form-inline" asp-action="Remove">
+                    <input type="hidden" asp-for="@Model.FirstOrDefault().Id" value="@item.IdPlatilloNavigation.Id" />
+                    <button type="submit" class="btn btn-warning btn-lg">
+                        <i class="bi bi-trash"></i>
+                        Quitar
+                    </button>
+                </form>
+
+            </td>
+
+            <td>@item.IdPlatilloNavigation.Id</td>
+            <td>@item.IdPlatilloNavigation.Nombre</td>
+            <td>
+
+                @if (item.IdPlatilloNavigation.Imagen != null)
+                {
+                    var base64 = Convert.ToBase64String(item.IdPlatilloNavigation.Imagen);
+                    var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+
+                    <img src="@imgSrc" width="250" height="250" class="imagenVenta" />
+                }
+
+            </td>
+            <td>@item.IdPlatilloNavigation.Precio</td>
+            <td>@item.Cantidad</td>
+            <td>@item.Total.ToString("N2")</td>
+            <td>@item.IdPlatilloNavigation.IdMenuNavigation.IdRestauranteNavigation.Nombre</td>
+        </tr>
+    }
+    <tr>
+        <td align="right" colspan="7">Total</td>
+
+        <td class="table-dark text-white">
+            @Model.Sum(x => x.Total).ToString("N2")
+        </td>
+    </tr>
+</table>
+<br>
+
+
+<form class="form-inline" asp-action="Facturar"> 
+    <button type="submit" class="btn btn-danger btn-lg">
+        <i class="bi bi-cash-coin"></i>
+        Finalizar
+    </button>
+</form>
+
+ 

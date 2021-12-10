@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Proyecto2.Models.Restaurante>
+
+ 
+
+@{
+    Layout = "_FinalLayout";
+    ViewData["Title"] = "Inicio";
+}
+
+<h1 class="alert alert-warning" role="alert">Seleccione un Restaurante</h1>
+
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <ul class="list-group list-group-horizontal">
+                @foreach (var item in Model)
+                {
+
+                    <li class="list-group-item">
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">@(item.Nombre)</h5>
+                                <img src="~/Restaurante.png" width="250" height="250">
+                                <a asp-action="Menu" asp-route-id="@item.Id" class="btn btn-primary btn-lg" style="margin: 10px;">Seleccionar</a>
+                            </div>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
